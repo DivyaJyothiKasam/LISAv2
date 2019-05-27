@@ -77,7 +77,7 @@ else
         wget https://raw.githubusercontent.com/LIS/lis-next/"$version"/hv-rhel$i.x/hv/include/linux/hv_compat.h
         check_exit_status "Download file hv_compat.h" "exit"
         sourceversion=$(grep 'define HV_DRV_VERSION' hv_compat.h|cut -d '"' -f 2)
-        sourceversion_hex=$(grep 'define _HV_DRV_VERSION' hv_compat.h|cut -d ' ' -f 3|tr -d '0x')
+        sourceversion_hex=$(grep 'define _HV_DRV_VERSION' hv_compat.h|cut -d ' ' -f 3|sed -r 's/^0x//g')
         check_lis_version $version $sourceversion
         check_lis_version_hex $version $sourceversion_hex
     done
