@@ -195,7 +195,8 @@
         <OverrideVMSize>Standard_L8s_v2</OverrideVMSize>
         <testParameters>
             <param>HYPERV_DISK_COUNT=1</param>
-            <param>disable_enable_pci=yes</param>
+	    <param>disable_enable_pci=yes</param>
+	    <param>nvme_version=NVME_VERSION</param>
         </testParameters>
         <Timeout>1200</Timeout>
         <cleanupScript>.\Testscripts\Windows\SETUP-Remove-NVME-Disk.ps1</cleanupScript>
