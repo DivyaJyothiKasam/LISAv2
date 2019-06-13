@@ -20,7 +20,8 @@
         <Category>Functional</Category>
         <TestParameters>
             <param>LIS_TARBALL_URL_CURRENT=LIS_CURRENT_URL</param>
-        </TestParameters>
+    </TestParameters>
+    <timeout>1200</timeout>
         <Area>LIS_DEPLOY</Area>
         <Tags>lis</Tags>
         <Priority>1</Priority>
