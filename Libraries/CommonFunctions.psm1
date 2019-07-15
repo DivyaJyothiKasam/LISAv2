@@ -694,15 +694,13 @@ function Install-CustomLIS ($CustomLIS, $customLISBranch, $allVMData, [switch]$R
 					}
 					else
 					{
-						if ( !(Test-Path -Path "$LogDir\$($job.RoleName)-build-CustomLIS.txt" ) )
-						{
-							Copy-RemoteFiles -download -downloadFrom $job.PublicIP -port $job.SSHPort -files "build-CustomLIS.txt" -username "root" -password $password -downloadTo $LogDir
-							if ( ( Get-Content "$LogDir\build-CustomLIS.txt" ) -imatch "CUSTOM_LIS_SUCCESS" )
-							{
-								$lisSuccess += 1
-							}
-							Rename-Item -Path "$LogDir\build-CustomLIS.txt" -NewName "$($job.RoleName)-build-CustomLIS.txt" -Force | Out-Null
-						}
+                        Copy-RemoteFiles -download -downloadFrom $job.PublicIP -port $job.SSHPort -files "build-CustomLIS.txt" -username "root" -password $password -downloadTo $LogDir
+
+                        if ( ( Get-Content "$LogDir\build-CustomLIS.txt" ) -imatch "CUSTOM_LIS_SUCCESS" )
+                        {
+                            $lisSuccess += 1                            
+                        }                        
+                        Move-Item -Path "$LogDir\build-CustomLIS.txt" -Destination "${LogDir}\$($job.RoleName)-build-CustomLIS.txt" -Force | Out-Null
 					}
 				}
 				if ( $packageInstallJobsRunning )
@@ -711,7 +709,9 @@ function Install-CustomLIS ($CustomLIS, $customLISBranch, $allVMData, [switch]$R
 				}
 			}
 
-			if ( $lisSuccess -eq $jobCount )
+			Write-LogErr "siree lisSuccess - $lisSuccess"
+            Write-LogErr "siree jobCount - $jobCount"
+            if ( $lisSuccess -eq $jobCount )
 			{
 				Write-LogInfo "LIS upgraded to `"$CustomLIS`" successfully in all VMs."
 				if ( $RestartAfterUpgrade )
@@ -1751,7 +1751,7 @@ Function Invoke-RemoteScriptAndCheckStateFile
         -downloadTo $LogDir -port $VMPort -username $VMUser -password $password
     Copy-RemoteFiles -download -downloadFrom $VMIpv4 -files "/home/${user}/${remoteScript}.log" `
         -downloadTo $LogDir -port $VMPort -username $VMUser -password $VMPassword
-    rename-item -path "${LogDir}\state.txt" -newname $stateFile
+    Move-Item -Path "${LogDir}\state.txt" -Destination "${LogDir}\$stateFile" -Force
     $contents = Get-Content -Path $LogDir\$stateFile
     if (($contents -eq "TestAborted") -or ($contents -eq "TestFailed")) {
         return $False
