@@ -387,6 +387,13 @@ function InstallKernel() {
         LogMsg "Installing ${customKernelFilesUnExpanded}"
         eval "rpm -ivh $customKernelFilesUnExpanded >> $LOG_FILE 2>&1"
         kernelInstallStatus=$?
+	CHECK_AlREADY_INSTALLED=$(grep "package .* is already installed" $LOG_FILE)
+        LogMsg "divyaa $CHECK_AlREADY_INSTALLED"
+        if ! [[ -z $CHECK_AlREADY_INSTALLED ]];then
+		LogMsg "CUSTOM_KERNEL_SUCCESS"
+		SetTestStateCompleted
+		exit 0
+	fi
 
         LogMsg "Configuring the correct kernel boot order"
         sed -i 's%GRUB_DEFAULT=.*%GRUB_DEFAULT=0%' /etc/default/grub
