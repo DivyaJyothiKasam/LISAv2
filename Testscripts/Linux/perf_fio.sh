@@ -250,7 +250,7 @@ fi
 vggroup="vg1"
 cd ${HOMEDIR}
 
-install_fio
+#install_fio
 
 if [ $? -ne 0 ]; then
 	LogMsg "Error: install fio failed"
