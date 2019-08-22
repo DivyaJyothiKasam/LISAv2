@@ -387,6 +387,7 @@ function InstallKernel() {
         LogMsg "Installing ${customKernelFilesUnExpanded}"
         eval "rpm -ivh $customKernelFilesUnExpanded >> $LOG_FILE 2>&1"
         kernelInstallStatus=$?
+	LogMsg "divya kernelInstallStatus $kernelInstallStatus"
 
         LogMsg "Configuring the correct kernel boot order"
         sed -i 's%GRUB_DEFAULT=.*%GRUB_DEFAULT=0%' /etc/default/grub
