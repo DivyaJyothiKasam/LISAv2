@@ -192,7 +192,7 @@ function Main {
 
         # Start the test script
         Run-LinuxCmd -ip $allVMData.PublicIP -port $allVMData.SSHPort -username $superuser `
-            -password $password -command "/$superuser/${testScript}" -runMaxAllowedTime 1800 | Out-Null
+            -password $password -command "/$superuser/${testScript}" -runMaxAllowedTime 1800 -ignoreLinuxExitCode | Out-Null 
         $installState = Run-LinuxCmd -ip $allVMData.PublicIP -port $allVMData.SSHPort -username $superuser `
             -password $password -command "cat /$superuser/state.txt"
         if ($installState -ne "TestCompleted") {
