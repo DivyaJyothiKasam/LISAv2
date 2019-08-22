@@ -633,6 +633,12 @@ function Install-CustomKernel ($CustomKernel, $allVMData, [switch]$RestartAfterU
 				}
 				return $true
 			} else {
+				$customKernelAlreadyInstall="CUSTOM_KERNEL_ALREADY_INSTALLED"
+				$currentStatus = Run-LinuxCmd -ip $vmData.PublicIP -port $vmData.SSHPort -username $user -password $password -command "tail -n 1 build-CustomKernel.txt"
+				if ($currentStatus -imatch $customKernelAlreadyInstall) {
+					Write-LogInfo "Kernel upgrade skipped in $($jobCount-$kernelSuccess) VMs."
+					return $true
+				}
 				Write-LogErr "Kernel upgrade failed in $($jobCount-$kernelSuccess) VMs."
 				return $false
 			}
